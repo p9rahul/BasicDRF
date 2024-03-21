@@ -3,8 +3,9 @@ Django Rest framework Basics
 
 1) In this project - 
 Courses app- Nested serializers concept implemented 
-like - 1 Teacher has many subject
-
+- like 1 Teacher has many subject
+- Generics views - Class - ListCreateAPIView
+- Serializers:- ModelSerializer
 ************************************
 # Json Schema:
 {

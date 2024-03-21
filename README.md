@@ -4,7 +4,7 @@ Django Rest framework Basics
 1) In this project - 
 Courses app- Nested serializers concept implemented 
 - like 1 Teacher has many subject
-- Generics views - Class - ListCreateAPIView
+- Generics views - Class - ListCreateAPIView (get and post not put,delete)
 - Serializers:- ModelSerializer
 ************************************
 # Json Schema:
@@ -24,14 +24,15 @@ Courses app- Nested serializers concept implemented
 ************************************
 # Model:
 
+#__str__ method returns a human-readable string representation of an object in DB 
 class Teacher(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
 
-    #this method returns a human-readable string representation of an object in DB 
     def __str__(self):
         return self.email
-    
+        
+#Subject model    
 class Subject(models.Model):
     title = models.CharField(max_length=20)
     rating = models.IntegerField()

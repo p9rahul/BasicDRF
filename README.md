@@ -41,7 +41,7 @@ class Subject(models.Model):
     title = models.CharField(max_length=20)
     rating = models.IntegerField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='Subjects')
-    
+
 ************************************
 # Serializers:- ModelSerializer
 
@@ -69,7 +69,7 @@ class TeacherSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 ************************************
-# Views used - Generics Views 
+# Generics Views
 - package name -generics
 - classes : 9 
 - # Note - generics ->Very less code required as compare to mixin class, 
@@ -82,7 +82,9 @@ from core.models import Teacher,Subject
 
 """
 Note - generics ->Very less code required as compare to mixin class,
-- Here we need to create two methods oterwise if we keep in same class 2 arguments, issue will come
+- Here we need to create two classes oterwise if we keep in same class 2 arguments, issue will come
+- 1 for primary key based operation 2nd class non-primary key based operations
+- Solution is viewset - beacuse same code is being repeat in both classes
 """
 #
 class TeacherListview(generics.ListCreateAPIView):
@@ -108,6 +110,7 @@ class SubjectDetailsview(generics.RetrieveUpdateDestroyAPIView):
 
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all()
+
 ************************************
 # Urls.py - Project app level
 from django.contrib import admin
@@ -140,4 +143,103 @@ select * from [dbo].[core_subject] sub
 JOIN [dbo].[core_teacher] tec
 on sub.teacher_id = tec.id
 where tec.name='john'
-=======================
+==============================================
+
+# Viewset - set of views is called viewset
+
+"""
+# Issue in generics
+- Need to map in urls.py 2 times
+- Need to create 2 classes for primary key & non-primary key based operations
+Solution:- Viewset
+- Use Routers for url mapping
+- Here we can make 1 class but 2 methods for primary key & non-primary key based operations
+- 2 types - 1.View set 2. Model view set
+- Here we need to overide mixin action mehtods like list(), retrive()
+Drawback of viewset -
+- For 1 class we need to write each method for for CURD operations -> more code
+Solution - Model viewset
+- No change in serializers
+"""
+
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import SubjectSerializer, TeacherSerializer
+from core.models import Teacher,Subject
+
+class TeacherViewSet(ViewSet):
+
+    def list(self, request):
+        teachersQS = Teacher.objects.all()
+        serialzer = TeacherSerializer(teachersQS, many=True)
+        return Response(serialzer.data)
+    
+    def retrieve(self, request, pk):
+        try:
+            teacherQS= Teacher.objects.get(pk=pk)
+        except Teacher.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serialzer = TeacherSerializer(teacherQS)
+        return Response(serialzer.data)
+    
+    def create(self, request):
+        # teachersQS = Teacher.objects.all() not required
+        serialzer = TeacherSerializer(data=request.data)
+        if serialzer.is_valid():
+            serialzer.save()
+            return Response(serialzer.data)
+        return Response(serialzer._errors)
+
+************************************
+# Url mapping For Viewset -> using Router
+
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from Courses.views import TeacherViewSet
+
+router = DefaultRouter()
+router.register('teachers',TeacherViewSet,basename='Teacher')
+
+app_name = 'Courses'
+
+urlpatterns = [
+    path('', include(router.urls))
+]
+==============================================
+
+# Model viewset- 
+- only 2 lines of code and you will get all CURD operations methods
+- No change in serializers
+
+from rest_framework.viewsets import ModelViewSet
+from .serializers import SubjectSerializer, TeacherSerializer
+from core.models import Teacher,Subject
+
+class TeacherViewSet(ModelViewSet):
+
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+class SubjectViewSet(ModelViewSet):
+
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+************************************
+# Url mapping For ModelViewset -> using Router
+
+- No change in urls.py for model viewset , same as viewset
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from Courses.views import TeacherViewSet,SubjectViewSet
+
+router = DefaultRouter()
+router.register('teachers',TeacherViewSet,basename='Teacher')
+router.register('subjects',SubjectViewSet,basename='Subject')
+
+app_name = 'Courses'
+
+urlpatterns = [
+    path('', include(router.urls))
+]

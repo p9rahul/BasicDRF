@@ -161,7 +161,7 @@ Drawback of viewset -
 Solution - Model viewset
 - No change in serializers
 """
-
+#
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -198,6 +198,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from Courses.views import TeacherViewSet
 
+#
 router = DefaultRouter()
 router.register('teachers',TeacherViewSet,basename='Teacher')
 
@@ -209,6 +210,7 @@ urlpatterns = [
 ==============================================
 
 # Model viewset- 
+
 - only 2 lines of code and you will get all CURD operations methods
 - No change in serializers
 
@@ -230,6 +232,8 @@ class SubjectViewSet(ModelViewSet):
 # Url mapping For ModelViewset -> using Router
 
 - No change in urls.py for model viewset , same as viewset
+
+
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from Courses.views import TeacherViewSet,SubjectViewSet

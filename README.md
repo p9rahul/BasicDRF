@@ -113,10 +113,12 @@ class SubjectDetailsview(generics.RetrieveUpdateDestroyAPIView):
 
 ************************************
 # Urls.py - Project app level
+
 from django.contrib import admin
 from django.urls import path
 from Courses.views import TeacherListview, SubjectListview
 
+#
 urlpatterns = [
     path('teachers', TeacherListview.as_view()),
     path('teachers/<int:pk>', TeacherDetailsview.as_view()),
@@ -126,6 +128,7 @@ urlpatterns = [
 ]
 
 # Urls.py outer app level
+
 from django.contrib import admin
 from django.urls import path,include
 
@@ -133,6 +136,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('Courses.urls'))
 ]
+
 ************************************
 # SQL - 
 select * from [dbo].[core_subject]
@@ -148,7 +152,6 @@ where tec.name='john'
 
 # Viewset - set of views is called viewset
 
-"""
 # Issue in generics
 - Need to map in urls.py 2 times
 - Need to create 2 classes for primary key & non-primary key based operations
@@ -161,7 +164,8 @@ Drawback of viewset -
 - For 1 class we need to write each method for for CURD operations -> more code
 Solution - Model viewset
 - No change in serializers
-"""
+
+
 #
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response

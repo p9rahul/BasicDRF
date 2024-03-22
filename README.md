@@ -25,6 +25,7 @@ Courses app- Nested serializers concept implemented
 # Model:
 
 #__str__ method returns a human-readable string representation of an object in DB 
+#
 class Teacher(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
@@ -32,7 +33,8 @@ class Teacher(models.Model):
     def __str__(self):
         return self.email
         
-#Subject model    
+#Subject model
+#
 class Subject(models.Model):
     title = models.CharField(max_length=20)
     rating = models.IntegerField()
@@ -44,13 +46,14 @@ class Subject(models.Model):
 from core.models import Teacher, Subject
 from rest_framework import serializers
 
-#ModelSerializer
+#
 class SubjectSerializer(serializers.ModelSerializer):
     
     class Meta:
         model= Subject
         fields ='__all__'
 
+#
 class TeacherSerializer(serializers.ModelSerializer):
 
     Subjects = SubjectSerializer(many=True, read_only=True)

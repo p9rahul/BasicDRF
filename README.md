@@ -143,6 +143,7 @@ select * from [dbo].[core_subject] sub
 JOIN [dbo].[core_teacher] tec
 on sub.teacher_id = tec.id
 where tec.name='john'
+
 ==============================================
 
 # Viewset - set of views is called viewset
@@ -207,6 +208,7 @@ app_name = 'Courses'
 urlpatterns = [
     path('', include(router.urls))
 ]
+
 ==============================================
 
 # Model viewset- 

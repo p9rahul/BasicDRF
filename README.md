@@ -27,6 +27,7 @@ Courses app- Nested serializers concept implemented
 #__str__ method returns a human-readable string representation of an object in DB 
 #
 class Teacher(models.Model):
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
 
@@ -36,9 +37,11 @@ class Teacher(models.Model):
 #Subject model
 #
 class Subject(models.Model):
+
     title = models.CharField(max_length=20)
     rating = models.IntegerField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='Subjects')
+    
 ************************************
 # Serializers:- ModelSerializer
 

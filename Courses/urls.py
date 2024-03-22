@@ -14,10 +14,13 @@
 
 from django.contrib import admin
 from django.urls import path
-from Courses.views import TeacherListview, SubjectListview
+from Courses.views import *
 
 urlpatterns = [
     path('teachers', TeacherListview.as_view()),
-    path('subjects', SubjectListview.as_view())
+    path('teachers/<int:pk>', TeacherDetailsview.as_view()),
+    path('subjects', SubjectListview.as_view()),
+    path('subjects/<int:pk>', SubjectDetailsview.as_view())
+
 
 ]

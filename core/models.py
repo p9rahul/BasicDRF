@@ -14,14 +14,3 @@ class Subject(models.Model):
     title = models.CharField(max_length=20)
     rating = models.IntegerField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='Subjects')
-
-'''
-select * from [dbo].[core_subject]
-
-select * from [dbo].[core_teacher]
-
-select * from [dbo].[core_subject] sub
-right JOIN [dbo].[core_teacher] tec
-on sub.teacher_id = tec.id
-where tec.name='john'
-'''
